@@ -4,7 +4,6 @@ local dump = require("dump")
 local lexicon = require("lexicon")
 
 local index = {}
-local query_terms = {}
 
 lexicon.setup(index, fs.currentdir() .. "/resource")
 
@@ -17,6 +16,7 @@ while true do
     break
   end
 
+  local query_terms = {}
   for _t in string.gmatch(string.lower(term), "%S+") do
     table.insert(query_terms, string.lower(_t))
   end
