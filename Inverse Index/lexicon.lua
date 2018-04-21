@@ -30,7 +30,7 @@ local function filter(index, query_terms)
     if index[term] then
       table.insert(postings, index[term]) -- insert docs that contain the term into result table
     else 
-      table.insert(postings, {}) -- insert empty table => union will be empty too
+      table.insert(postings, {}) -- insert empty table => intersection will be empty too
     end
   end
 

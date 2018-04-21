@@ -16,7 +16,7 @@ local function intersect(a, b)
   return ret
 end
 
-function union(a, b)
+local function union(a, b)
   a = {unpack(a)} -- clone a, so we don't modify the original table
   for _, b_ in ipairs(b) do
     if not find(b_, a) then 
