@@ -21,7 +21,10 @@ while true do
     break
   end
 
-  table.insert(query_terms, string.lower(term))
+  for _t in string.gmatch(string.lower(term), "%S+") do
+    table.insert(query_terms, string.lower(_t))
+  end
+
   local result = lexicon.filter(index, query_terms)
   
   print(#result .. " results: " .. dump(result))  
