@@ -48,6 +48,8 @@ local function filterIndex(index, query_terms)
   for _, term in pairs(query_terms) do
     if index[term] then
       table.insert(postings, index[term])
+    else 
+      table.insert(postings, {})
     end
   end
   
