@@ -28,5 +28,6 @@ end
 
 
 return {
-  intersect = intersect
+  intersect = intersect,
+  union = union
 }
