@@ -1,3 +1,4 @@
+# https://stackoverflow.com/questions/9168058/how-to-dump-a-table-to-console/27028488#27028488
 local function dump(o)
   if type(o) == 'table' then
     local s = '{ '
