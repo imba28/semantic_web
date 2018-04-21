@@ -8,24 +8,23 @@ end
 
 local function intersect(a, b)
   local ret = {}
-	for _,b_ in ipairs(b) do
-		if find(b_,a) then 
+  for _,b_ in ipairs(b) do
+    if find(b_,a) then 
       table.insert(ret, b_)
     end
-	end
-	return ret
+  end
+  return ret
 end
 
 function union(a, b)
-	a = {unpack(a)} -- clone a, so we don't accidentally modifiy the original table
-	for _, b_ in ipairs(b) do
-		if not find(b_, a) then 
+  a = {unpack(a)} -- clone a, so we don't modify the original table
+  for _, b_ in ipairs(b) do
+    if not find(b_, a) then 
       table.insert(a, b_)
     end
-	end
-	return a
+  end
+  return a
 end
-
 
 return {
   intersect = intersect,

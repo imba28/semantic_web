@@ -5,10 +5,11 @@ local function setup(index, path)
   for file in fs.dir(path) do
     if file ~= "." and file ~= ".." then
       for line in io.lines(path .. "/" .. file) do
-        for i in string.gmatch(line, "%S+") do
+        for i in string.gmatch(line, "%S+") do -- split " "
           local word = string.match(i, "[a-zA-Z0-9]+") -- filter chars and digits 
           if word and #word > 1 then -- if not nil and length > 1
             word = string.lower(word)
+            
             if not index[word] then
               index[word] = {}
             end
@@ -24,15 +25,15 @@ end
 local function filter(index, query_terms)
   local postings = {}
   local result
-  
+
   for _, term in pairs(query_terms) do
     if index[term] then
-      table.insert(postings, index[term])
+      table.insert(postings, index[term]) -- insert docs that contain the term into result table
     else 
-      table.insert(postings, {})
+      table.insert(postings, {}) -- insert empty table => union will be empty too
     end
   end
-  
+
   for i in pairs(postings) do
     if not result then
       result = postings[i]
@@ -40,7 +41,7 @@ local function filter(index, query_terms)
       result = intersect(result, postings[i])
     end
   end
-  
+
   table.sort(result)
   return result and result or {}
 end

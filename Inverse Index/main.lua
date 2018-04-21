@@ -11,7 +11,7 @@ while true do
   print("Enter query, empty to quit:")
 
   local term = io.read("*l")
-  
+
   if #term == 0 then
     break
   end
@@ -22,7 +22,7 @@ while true do
   end
 
   local result = lexicon.filter(index, query_terms)
-  
+
   print(#result .. " results: " .. dump(result))  
 end
 
