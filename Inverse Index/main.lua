@@ -28,7 +28,6 @@ while true do
   local result = lexicon.filter(index, query_terms)
   
   print(#result .. " results: " .. dump(result))  
-  print()
 end
 
 print("goodbye")
