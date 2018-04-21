@@ -4,6 +4,8 @@ local fs = require("lfs")
 local subdir = "Inverse Index"
 local path = fs.currentdir() .. "/" .. subdir
 
+local intersect = require(subdir .. ".operations").intersect
+
 local function setupIndex(index)
   local resource_path = path .. "/resource"
 
@@ -24,22 +26,6 @@ local function setupIndex(index)
       end
     end
   end
-end
-
-local function find(a, t)
-  for _,a_ in ipairs(t) do 
-    if a_== a then 
-      return true 
-    end 
-  end
-end
-
-local function intersect(a, b)
-  local ret = {}
-	for _,b_ in ipairs(b) do
-		if find(b_,a) then table.insert(ret, b_) end
-	end
-	return ret
 end
 
 local function filterIndex(index, query_terms)
