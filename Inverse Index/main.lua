@@ -4,6 +4,7 @@ subdir = "Inverse Index"
 local fs = require("lfs")
 local path = fs.currentdir() .. "/" .. subdir
 
+local dump = require(subdir .. ".dump")
 local lexicon = require(subdir .. ".lexicon")
 
 local index = {}
@@ -15,6 +16,7 @@ while true do
   print("Enter query, empty to quit:")
 
   local term = io.read("*l")
+  
   if #term == 0 then
     break
   end
@@ -22,11 +24,8 @@ while true do
   table.insert(query_terms, string.lower(term))
   local result = lexicon.filter(index, query_terms)
   
-  print(#result .. " results:")
-  
-  for _, resource in pairs(result) do
-    print(resource)
-  end
+  print(#result .. " results: " .. dump(result))  
+  print()
 end
 
 print("goodbye")
