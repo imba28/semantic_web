@@ -1,5 +1,5 @@
 local fs = require("lfs")
-local intersect = require(subdir .. ".operations").intersect
+local intersect = require("operations").intersect
 
 local function setup(index, path)
   for file in fs.dir(path) do

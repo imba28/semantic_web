@@ -1,16 +1,12 @@
-
-subdir = "Inverse Index"
-
 local fs = require("lfs")
-local path = fs.currentdir() .. "/" .. subdir
 
-local dump = require(subdir .. ".dump")
-local lexicon = require(subdir .. ".lexicon")
+local dump = require("dump")
+local lexicon = require("lexicon")
 
 local index = {}
 local query_terms = {}
 
-lexicon.setup(index, path .. "/resource")
+lexicon.setup(index, fs.currentdir() .. "/resource")
 
 while true do
   print("Enter query, empty to quit:")
