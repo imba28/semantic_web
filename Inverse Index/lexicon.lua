@@ -23,6 +23,7 @@ end
 
 local function filter(index, query_terms)
   local postings = {}
+  local result
   
   for _, term in pairs(query_terms) do
     if index[term] then
@@ -31,8 +32,6 @@ local function filter(index, query_terms)
       table.insert(postings, {})
     end
   end
-  
-  local result
   
   for i in pairs(postings) do
     if not result then
@@ -43,7 +42,6 @@ local function filter(index, query_terms)
   end
   
   table.sort(result)
-  
   return result and result or {}
 end
 
