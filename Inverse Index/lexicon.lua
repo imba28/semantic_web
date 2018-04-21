@@ -42,6 +42,8 @@ local function filter(index, query_terms)
     end
   end
   
+  table.sort(result)
+  
   return result and result or {}
 end
 
