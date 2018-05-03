@@ -4,34 +4,37 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 })
-const index = {}
+const index = new Map()
 const resourceDir = 'test'
+const maxResultCount = 5
 
 const files = fs.readdirSync(resourceDir)
-
 files.forEach(file => {
     fs.readFileSync(`${resourceDir}/${file}`, 'utf8').split(/[\s\n]+/).forEach(term => {
         if (term.length <= 1) return 0; // skip short terms
+
+        term = term.toLowerCase()
         
-        if (!index[term]) {
-            index[term] = {
+        if (!index.has(term)) {
+            index.set(term, {
                 docs: {},
                 idf: 0
-            }
+            })
         } 
-        
-        index[term].docs[file] = 
-            index[term].docs[file] ? 
-                index[term].docs[file] + 1
-                : 1
+
+        if (index.get(term).docs[file]) {
+            index.get(term).docs[file]++
+        } else {
+            index.get(term).docs[file] = 1
+        }
     })
 })
 
-const documentFrequency = term => Object.keys(index[term].docs).length 
+const documentFrequency = term => Object.keys(index.get(term).docs).length 
 const inverseDocumentFrequency = term => files.length / documentFrequency(term)
 
 function calcIDF() {
-    for ([term, info] of Object.entries(index)) {
+    for ([term, info] of index.entries()) {
         info.idf = inverseDocumentFrequency(term)
     }
 }
@@ -45,13 +48,12 @@ function askForInput() {
             console.log('Goodbye!')
             process.exit(0)
         }
-        //console.log('Found x results, showing top 5')
         const scores = []
 
         input.split(/\s+/).forEach(queryTerm => {
-            if (!index[queryTerm]) return 0;
+            if (!index.get(queryTerm)) return 0;
 
-            for (let document in index[queryTerm].docs) {
+            for (let document in index.get(queryTerm).docs) {
                 let documentScore = scores.find(item => item.document === document)
 
                 if (!documentScore) {
@@ -61,11 +63,13 @@ function askForInput() {
                     }
                     scores.push(documentScore)
                 }
-                documentScore.score += index[queryTerm].docs[document] * index[queryTerm].idf
+
+                documentScore.score += index.get(queryTerm).docs[document] * index.get(queryTerm).idf
             }
         })
 
-        console.log(scores)
+        scores.sort((a, b) => a.score < b.score)
+        console.log(scores.slice(0, maxResultCount))
 
         askForInput()
     })
