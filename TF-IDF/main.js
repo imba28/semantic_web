@@ -5,8 +5,10 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 const index = new Map()
-const resourceDir = 'test'
+const resourceDir = 'resource'
 const maxResultCount = 5
+
+console.time("p")
 
 const files = fs.readdirSync(resourceDir)
 files.forEach(file => {
@@ -29,6 +31,8 @@ files.forEach(file => {
         }
     })
 })
+
+console.timeEnd("p")
 
 const documentFrequency = term => Object.keys(index.get(term).docs).length 
 const inverseDocumentFrequency = term => files.length / documentFrequency(term)
