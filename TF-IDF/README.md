@@ -5,7 +5,7 @@
 - Node.js
 - [simple-wikipedia.zip](https://georgms.github.io/textsearch102/files/simple-wikipedia.zip)
 
-#### ~~Dependecies~~
+#### ~~Dependencies~~
 
 #### Usage
 
