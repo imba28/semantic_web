@@ -2,16 +2,12 @@
 
 #### Requires
 
-- [Lua](https://www.lua.org/)
-- [LuaRocks package manager](https://luarocks.org/)
-
-Dependencies:
-- [LuaFileSystem](https://keplerproject.github.io/luafilesystem/)
-
-#### Installation
-
-`sudo luarocks install luafilesystem`
+- Node
 
 #### Usage
 
-`lua main.lua`
+`node main.js` oder
+
+`node main.js <resource directory>` oder
+
+`node main.js <resource directory> <top result max count>`

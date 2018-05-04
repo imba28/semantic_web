@@ -1,0 +1,14 @@
+{
+  "name": "tf-idf",
+  "version": "1.0.0",
+  "description": "inverse document frequency ranked retrieval",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lukas Gruber",
+  "license": "MIT"
+}
