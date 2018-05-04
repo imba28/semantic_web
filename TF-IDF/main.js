@@ -5,17 +5,17 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 const index = new Map()
+
 const resourceDir = 'resource'
 const maxResultCount = 5
 
-console.time("p")
+console.time("timer")
 
 const files = fs.readdirSync(resourceDir)
 files.forEach(file => {
     fs.readFileSync(`${resourceDir}/${file}`, 'utf8').split(/[\s\n]+/).forEach(term => {
-        if (term.length <= 1) return 0; // skip short terms
-
-        term = term.toLowerCase()
+        term = term.toLowerCase().replace(/[^\w]/, '')
+        if (term.length <= 1) return 0 // skip short terms
         
         if (!index.has(term)) {
             index.set(term, {
@@ -24,22 +24,23 @@ files.forEach(file => {
             })
         } 
 
-        if (index.get(term).docs[file]) {
-            index.get(term).docs[file]++
+        const indexEntry = index.get(term)
+        if (indexEntry.docs[file]) {
+            indexEntry.docs[file]++
         } else {
-            index.get(term).docs[file] = 1
+            indexEntry.docs[file] = 1
         }
     })
 })
 
-console.timeEnd("p")
+console.timeEnd("timer")
 
 const documentFrequency = term => Object.keys(index.get(term).docs).length 
 const inverseDocumentFrequency = term => files.length / documentFrequency(term)
 
 function calcIDF() {
     for ([term, info] of index.entries()) {
-        info.idf = inverseDocumentFrequency(term)
+        info.idf = files.length / documentFrequency(term)
     }
 }
 
@@ -52,29 +53,42 @@ function askForInput() {
             console.log('Goodbye!')
             process.exit(0)
         }
+
         const scores = []
 
         input.split(/\s+/).forEach(queryTerm => {
-            if (!index.get(queryTerm)) return 0;
+            if (!index.get(queryTerm)) return 0
 
             for (let document in index.get(queryTerm).docs) {
                 let documentScore = scores.find(item => item.document === document)
 
                 if (!documentScore) {
                     documentScore = {
+                        partial: [],
                         document,
                         score: 0
                     }
                     scores.push(documentScore)
                 }
 
-                documentScore.score += index.get(queryTerm).docs[document] * index.get(queryTerm).idf
+                const partialScore = index.get(queryTerm).docs[document] * index.get(queryTerm).idf
+                documentScore.partial.push({
+                    term: queryTerm,
+                    score: partialScore
+                })
+                documentScore.score += partialScore
             }
         })
 
-        scores.sort((a, b) => a.score < b.score)
-        console.log(scores.slice(0, maxResultCount))
+        scores.sort((a, b) => a.score > b.score ? -1 : 1)
 
+        console.log(`Found ${scores.length} results, showing top ${maxResultCount}\n`)
+        scores.slice(0, maxResultCount).forEach(item => {
+            console.log(`${item.document}: ${item.score}`)
+            item.partial.forEach(term => console.log(`${term.term}: ${term.score}`))
+            console.log()
+        })
+        
         askForInput()
     })
 }
