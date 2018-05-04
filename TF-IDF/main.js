@@ -5,7 +5,7 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 const index = new Map()
-const [resourceDir = 'resource', maxResultCount = 5] = process.argv.slice(2)
+const [resourceDir = 'test', maxResultCount = 5] = process.argv.slice(2)
 
 console.time("timer")
 
