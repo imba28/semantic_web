@@ -1,11 +1,18 @@
 const fs = require('fs');
-const Stream = require('stream');
 const readline = require('readline');
 
-const stream = fs.createReadStream('./demo.data');
-const outstream = fs.createWriteStream('./demo.json', { flags: 'w' });
+const dataFile = 'demo.data';
+const prettyPrint = true;
 
-const data = [];
+const stream = fs.createReadStream(dataFile);
+const outstream = fs.createWriteStream('./demo.json', {
+    flags: 'w'
+});
+const rl = readline.createInterface({
+    input: stream,
+    terminal: false
+});
+
 const fields = ['opening_txt', 'auxiliary_text', 'title', 'text', 'heading', 'coordinates', 'category', 'outgoing_link', 'popularity_score'];
 const map = {
     'opening_txt': 'opening_txt_en',
@@ -19,12 +26,6 @@ const map = {
     'popularity_score': 'popularity_f'
 };
 
-const rl = readline.createInterface({
-    input: stream,
-    output: outstream,
-    terminal: false
-});
-
 rl.on('line', function (line) {
     const parsedJson = JSON.parse(line);
     if (parsedJson.index) return 0;
@@ -36,9 +37,14 @@ rl.on('line', function (line) {
             d[_key] = parsedJson[key];
         }
     });
-    data.push(d);
+
+    if (prettyPrint) {
+        outstream.write(JSON.stringify(d, null, 2) + ",\n");
+    } else {
+        outstream.write(JSON.stringify(d) + ",\n");
+    }
 });
 
 rl.on('close', () => {
-    outstream.write(JSON.stringify(data, null, 2));
+    outstream.end();
 });
