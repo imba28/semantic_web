@@ -28,5 +28,5 @@ rl.on('line', function (line) {
 });
 
 rl.on('close', () => {
-    outstream.write(JSON.stringify(data), null, 2);
+    outstream.write(JSON.stringify(data, null, 2));
 });
