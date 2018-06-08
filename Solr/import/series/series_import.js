@@ -22,11 +22,20 @@ connection.query(`
         hits
     FROM serien_solr_import.tvseries 
     LIMIT 100`, 
-    (error, results) => {
+    (error, rows) => {
         if (error) throw error;
-        
-        console.log(`Found ${results.length} rows.`)
-        fs.writeFile('./series.json', JSON.stringify(results), (err) => {
+        console.log(`Found ${rows.length} rows.`)
+
+        rows.forEach((item) => {
+            if (item.Genre) {
+                item.Genre = item.Genre.split('|').filter(genre => genre.length > 0)
+            }
+            if (item.Actors) {
+                item.Actors = item.Actors.split('|').filter(actor => actor.length > 0)
+            }
+        })
+
+        fs.writeFile('./series.json', JSON.stringify(rows), (err) => {
             if (err) throw err;
             console.log(`Saved to series.json!`)
         })

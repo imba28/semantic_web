@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 
 const dataFile = 'demo.data';
-const prettyPrint = true;
+const prettyPrint = false;
 
 const stream = fs.createReadStream(dataFile);
 const outstream = fs.createWriteStream('./demo.json', {
