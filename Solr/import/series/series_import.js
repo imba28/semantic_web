@@ -21,7 +21,7 @@ connection.query(`
         Overview,
         hits
     FROM serien_solr_import.tvseries 
-    LIMIT 100`, 
+    -- LIMIT 100`, 
     (error, rows) => {
         if (error) throw error;
         console.log(`Found ${rows.length} rows.`)
