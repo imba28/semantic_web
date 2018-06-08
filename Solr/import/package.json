@@ -1,0 +1,15 @@
+{
+  "name": "import",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mysql": "^2.15.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
