@@ -38,11 +38,12 @@ rl.on('line', function (line) {
         }
     });
 
+    const jsonArgs = [d];
     if (prettyPrint) {
-        outstream.write(JSON.stringify(d, null, 2) + ",\n");
-    } else {
-        outstream.write(JSON.stringify(d) + ",\n");
+        jsonArgs.push(null, 2);
     }
+
+    outstream.write(JSON.stringify(...jsonArgs) + ",\n");
 });
 
 rl.on('close', () => {
